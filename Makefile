@@ -9,21 +9,15 @@ INSTALL_MODETEST := $(BUILD_DIR)/tools/$(MODETEST)
 CC=$(CROSS_COMPILE)gcc
 AR=$(CROSS_COMPILE)ar
 
-# Change the library path.
-LIBDRM=../libdrm
-BO_HELPER=../bo-helper
-DRM_DRIVER=../driver
-
 INC := -I$(SRC_DIR)/include
 INC += -I$(SRC_DIR)/src
-INC += -I$(LIBDRM)/
-INC += -I$(LIBDRM)/include
-INC += -I$(LIBDRM)/include/drm
 INC += -I$(DRM_DRIVER)/include/uapi
-INC += -I$(BO_HELPER)/include
 
-LIBS := -L$(LIBDRM)/out -ldrm
-LIBS += -L$(BO_HELPER)/out -lvs_bo_helper
+# in isar build, need to specify drm.h in default include path
+INC += -I/usr/include/drm
+
+LIBS := -ldrm
+LIBS += -lvs_bo_helper
 LIBS += -lm -ldl -rdynamic -lpthread
 
 CFLAGS:= -fPIC -g -Wall -Werror -D_GNU_SOURCE -Wno-error=address -Wno-error=format-overflow
